@@ -1,0 +1,36 @@
+{
+  "version": "0.1.0",
+  "name": "AlphaRemote",
+  "description": "A remote controller for Sony Alpha series cameras",
+  "launch_path": "/index.html",
+  "icons": {
+    "16": "/img/icons/icon16x16.png",
+    "48": "/img/icons/icon48x48.png",
+    "60": "/img/icons/icon60x60.png",
+    "128": "/img/icons/icon128x128.png"
+  },
+  "developer": {
+    "name": "Élie Michel",
+    "url": "http://www.exppad.com"
+  },
+  "type": "privileged",
+  "permissions": {
+    "udp-socket": {
+      "description": "UDP is required to find the camera (SSDP protocol)"
+    },
+    "systemXHR" : {
+      "description": "External connection are needed to connect to the camera"
+    }
+  },
+  "installs_allowed_from": [
+    "*"
+  ],
+  "locales": {
+    "fr": {
+      "name": "AlphaRemote",
+      "description": "Une télécommande pour appareil photo Sony Alpha",
+      "permissions": {}
+    }
+  },
+  "default_locale": "en"
+}

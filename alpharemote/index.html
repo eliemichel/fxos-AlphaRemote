@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>AlphaRemote</title>
+        <meta name="description" content="A remote controller for Sony Alpha series cameras">
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" href="css/app.css">
+        <script type="text/javascript" src="js/libs/ssdp.js" defer></script>
+        <script type="text/javascript" src="js/libs/parseXml.js" defer></script>
+        <script type="text/javascript" src="js/libs/cameraUtils.js" defer></script>
+        <script type="text/javascript" src="js/app.js" defer></script>
+
+        <!--
+        The following two lines are for loading the localisations library
+        -->
+        <link rel="prefetch" type="application/l10n" href="data/locales.ini" />
+        <script type="text/javascript" src="js/libs/l10n.js" defer></script>
+    </head>
+    <body>
+        <section>
+            <h1 data-l10n-id="app_title">Privileged empty app</h1>
+            <p data-l10n-id="app_description">This app is empty. Fill it with your own stuff!</p>
+            <p id="message"></p>
+            <p>
+                <button id="button-pic">Take a pic!</button>
+                <img id="img-last-pic" alt="last pic" />
+            </p>
+        </section>
+    </body>
+</html>
