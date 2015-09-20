@@ -13,13 +13,14 @@ function SsdpDiscoverer(config) {
   self.deviceInfo = {}; // to store result
 }
   
-SsdpDiscoverer.prototype.makeSsdpDiscoverPacket = function() {
+SsdpDiscoverer.prototype.makeSsdpDiscoverPacket = function(target) {
+  target = target || self.ssdp_target;
   return (
     "M-SEARCH * HTTP/1.1\r\n" +
     "HOST: " + this.ssdp_address + ":" + this.ssdp_port + "\r\n" +
     "MAN: \"ssdp:discover\"\r\n" +
     "MX: " + this.ssdp_discover_mx + "\r\n" +
-    "ST: " + this.ssdp_target + "\r\n" +
+    "ST: " + target + "\r\n" +
     "\r\n"
   );
 };
@@ -39,7 +40,7 @@ SsdpDiscoverer.prototype.parseSsdpDiscoverAnswer = function(packet) {
 SsdpDiscoverer.prototype.discover = function(target) {
   // |target| is a SSDP target URN
   // e.g. "urn:schemas-upnp-org:service:ContentDirectory:1"
-  return new Promise(function(resolve, reject){
+  return new Promise((resolve, reject) => {
     this.searchSocket.joinMulticastGroup(this.ssdp_address);
 
     this.searchSocket.onmessage = e => {
@@ -49,13 +50,16 @@ SsdpDiscoverer.prototype.discover = function(target) {
     };
 
     this.searchSocket.opened.then(() => {
-      this.searchSocket.send(this.makeSsdpDiscoverPacket(), this.ssdp_address, this.ssdp_port);
-      setTimeout(() => { this.searchSocket.close() }, this.ssdp_discover_mx * 1000);
-    });
-
-    this.searchSocket.closed.then(() => {
-      reject(Error("SSDP discovery socket closed"));
+      this.searchSocket.send(this.makeSsdpDiscoverPacket(target), this.ssdp_address, this.ssdp_port);
+      setTimeout((() => {
+        this.searchSocket.close();
+        reject("SsdpDiscoverer: SSDP discovery time out (" + this.ssdp_discover_mx + "s delay)");
+      }), this.ssdp_discover_mx * 1000);
     });
   });
 };
 
+// Provide an alternative interface similar to $http
+function $ssdp(config) {
+  return new SsdpDiscoverer(config);
+}

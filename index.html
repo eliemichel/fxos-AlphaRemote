@@ -7,11 +7,13 @@
         <meta name="viewport" content="width=device-width">
         <link rel="stylesheet" href="css/app.css">
         <script type="text/javascript" src="js/libs/http.js" defer></script>
-        <!--dependency break-->
-        <script type="text/javascript" src="js/libs/ssdp.js" defer></script>
         <script type="text/javascript" src="js/libs/parseXml.js" defer></script>
-        <script type="text/javascript" src="js/libs/cameraUtils.js" defer></script>
-        <!--dependency break-->
+        <script type="text/javascript" src="js/libs/ssdp.js" defer></script>
+        <!--dependency lock-->
+        <script type="text/javascript" src="js/libs/Camera.js" defer></script>
+        <!--dependency lock-->
+        <script type="text/javascript" src="js/libs/CameraDisplay.js" defer></script>
+        <!--dependency lock-->
         <script type="text/javascript" src="js/app.js" defer></script>
 
         <!--
@@ -27,6 +29,7 @@
             <p id="message"></p>
             <p>
                 <button id="button-pic">Take a pic!</button>
+                <canvas id="liveview" height="100" width="100"></canvas>
                 <img id="img-last-pic" alt="last pic" />
             </p>
         </section>

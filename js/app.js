@@ -1,21 +1,12 @@
 'use strict';
 
-function apiPlay(camera){
-  apiRequest(camera, "getMethodTypes", ["1.0"], res => {
-    apiRequest(camera, "startRecMode", [], res => {
-      apiRequest(camera, "startLiveView", [], res => {
-        apiRequest(camera, "getAvailableApiList", [], res => {
-          console.log(res);
-          var buttonPic = document.getElementById('button-pic');
-          var lastPic = document.getElementById('img-last-pic');
-          buttonPic.addEventListener("click", e => {
-            apiRequest(camera, "actTakePicture", [], res => {
-              console.log(res);
-              lastPic.src = res.result[0][0];
-            });
-          });
-        });
-      });
+function setButtonPicAction() {
+  var buttonPic = document.getElementById('button-pic');
+  var lastPic = document.getElementById('img-last-pic');
+  
+  buttonPic.addEventListener("click", e => {
+    camera.actTakePicture().then(res => {
+      lastPic.src = res[0][0];
     });
   });
 }
@@ -24,25 +15,31 @@ window.addEventListener('DOMContentLoaded', function() {
 
   var translate = navigator.mozL10n.get;
   navigator.mozL10n.once(start);
+  
+  var camera = new Camera();
+  window.camera = camera; // for debug
 
   // ---
 
   function start() {
-
-    var message = document.getElementById('message');
-    message.textContent = translate('message');
+    
+    var liveview = document.getElementById('liveview');
+    var cameraDisplay = new CameraDisplay(camera, liveview)
 
     $ssdp().discover("urn:schemas-sony-com:service:ScalarWebAPI:1")
     .then(deviceInfo => {
       message.textContent = deviceInfo.location;
-      $http(deviceInfo.location).get().then(res => {
-        message.textContent = res;
-        var camera = getCameraEndpointFromXML(xhr.responseText);
-        window.camera = camera; // for debug
-        message.textContent = camera;
-        apiPlay(camera);
-      })
-    });
+      return $http(deviceInfo.location, { mozSystem: true }).get();
+    })
+    .then(xml => {
+      message.textContent = xml;
+      camera.setEndpointFromXML(xml);
+      message.textContent = camera.endpoint;
+      return camera.loadApiMethods();
+    })
+    .then(res => camera.startRecMode())
+    .then(res => cameraDisplay.startLiveviewStreaming())
+    .then(res => setButtonPicAction());
   }
 });
 
