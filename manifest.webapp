@@ -18,6 +18,9 @@
     "udp-socket": {
       "description": "UDP is required to find the camera (SSDP protocol)"
     },
+    "tcp-socket": {
+      "description": "TCP is required to stream camera liveview."
+    },
     "systemXHR" : {
       "description": "External connection are needed to connect to the camera"
     }
