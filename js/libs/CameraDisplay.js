@@ -18,7 +18,6 @@ function CameraDisplay(camera, canvas) {
 CameraDisplay.UPDATE_PERIOD = 1000;
 
 CameraDisplay.prototype.setJpeg = function(data) {
-  console.log("Update liveview", data.length);
   var blob = new Blob( [ data ], { type: "image/jpeg" } );
   var imageUrl = window.URL.createObjectURL( blob );
   var lastPic = document.getElementById('img-last-pic');
@@ -49,24 +48,24 @@ CameraDisplay.prototype.startLiveviewStreaming = function() {
     });
     xhr.send();
     
-    
-    //var httpStreamParser = new HttpStreamParser(httpStream, stream);
-    //httpStreamParser.run();
+    var payloadMagick = new Array(0x24, 0x35, 0x68, 0x79);
     
     function checkMagick(magick) {
       if (magick != 0xff) {
-        console.log("Protocole Error (CameraRemote): Wrong Magick (" + magick + ")");
+        //console.log("Protocole Error (CameraRemote): Wrong Magick (" + magick + ")");
       }
     }
     function checkPayloadType(type) {
       if (type != 0x01) {
-        console.log("Warning: Non liveview frame (payload type: " + type + ")");
+        //console.log("Warning: Non liveview frame (payload type: " + type + ")");
       }
     }
     function checkPayloadMagick(magick) {
-      if (magick[0] != 0x24 || magick[1] != 0x35 || magick[2] != 0x68 || magick[3] != 0x79) {
-        console.log("Protocole Error (CameraRemote): Wrong Payload Magick (" + magick[0] + ", " + magick[1] + ", " + magick[2] + ", " + magick[3] + ")");
+      if (magick[0] != payloadMagick[0] || magick[1] != payloadMagick[1] || magick[2] != payloadMagick[2] || magick[3] != payloadMagick[3]) {
+        //console.log("Protocole Error (CameraRemote): Wrong Payload Magick (" + magick[0] + ", " + magick[1] + ", " + magick[2] + ", " + magick[3] + ")");
+        return false;
       }
+      return true;
     }
     
     var handleCommonHeader = data => {
@@ -74,18 +73,23 @@ CameraDisplay.prototype.startLiveviewStreaming = function() {
       checkPayloadType(data[1]);
       var frameId = data[2] * 255 + data[3];
       var timestamp = (new Int32Array(data.buffer, 4, 1))[0];
-      console.log("timestamp: " + timestamp, "frameId: " + frameId);
+      //console.log("timestamp: " + timestamp, "frameId: " + frameId);
       
-      return stream.read(128).then(handlePayloadHeader)
+      return stream.read(4).then(handlePayloadHeader)
     };
     
     var paddingSize;
     var handlePayloadHeader = data => {
-      checkPayloadMagick(data);
-      var payloadSize = (data[4] * 255 + data[5]) * 255 + data[6];
-      var payloadSizeAlt = (data[6] * 255 + data[5]) * 255 + data[4];
-      paddingSize = data[7];
-      console.log("payloadSize: " + payloadSize, "payloadSizeAlt: " + payloadSizeAlt, "paddingSize: " + paddingSize);
+      if (!checkPayloadMagick(data)) {
+        return stream.flushToMagick(payloadMagick).then(() => stream.read(124)).then(handlePayloadHeaderAfterMagick);
+      }
+      return stream.read(124).then(handlePayloadHeaderAfterMagick);
+    };
+    
+    var handlePayloadHeaderAfterMagick = data => {
+      var payloadSize = (data[0] * 255 + data[1]) * 255 + data[2];
+      paddingSize = data[3];
+      //console.log("payloadSize: " + payloadSize, "paddingSize: " + paddingSize);
       
       return stream.read(payloadSize).then(handlePayload);
     };
