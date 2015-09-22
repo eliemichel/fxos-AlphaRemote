@@ -6,6 +6,13 @@ function CameraDisplay(camera, canvas) {
   // |camera| is the instance of Camera to display
   // |canvas| is the DOM canvas node to display it in.
   this.camera = camera;
+  
+  if (!canvas) {
+    canvas = document.createElement('canvas');
+    canvas.width = 256;
+    canvas.height = 256;
+  }
+  
   this.canvas = canvas;
   
   this.context = this.canvas.getContext("2d");
@@ -18,9 +25,12 @@ function CameraDisplay(camera, canvas) {
 CameraDisplay.UPDATE_PERIOD = 1000;
 
 CameraDisplay.prototype.setJpeg = function(data) {
-  var blob = new Blob( [ data ], { type: "image/jpeg" } );
+  var blob = new Blob( [ data ], { type: 'image/jpeg' } );
   var imageUrl = window.URL.createObjectURL( blob );
-  var lastPic = document.getElementById('img-last-pic');
+  var lastPic = new Image();
+  lastPic.onload = () => {
+    this.context.drawImage(lastPic,0,0);
+  };
   lastPic.src = imageUrl;
 };
 
