@@ -1,3 +1,25 @@
+define(function(require, exports, module) {
+'use strict';
+
+/**
+ * Module Dependencies
+ */
+
+var $ssdp = require('lib/alpha/ssdp');
+var $http = require('lib/alpha/http');
+var Camera = require('lib/alpha/Camera');
+var CameraDisplay = require('lib/alpha/CameraDisplay');
+var Stream = require('lib/alpha/Stream');
+
+var debug = require('debug')('AlphaCameraControl');
+
+/**
+ * Exports
+ */
+
+module.exports = AlphaCameraControl;
+
+  
 // This class implements the CameraControl interface for Alpha device
 // See https://developer.mozilla.org/en-US/docs/Web/API/CameraControl
 
@@ -21,23 +43,23 @@ function AlphaCameraControl() {
     zoomRatios: [1.0], // TODO
   };
   
-  this.effect: 'none';
-  this.exposureCompensation: 0;
-  this.flashMode: 'off';
-  this.focalLength: 50;
-  this.focusAreas: [];
-  this.focusDistanceFar: null; // unknown
-  this.focusDistanceNear: null; // unknown
-  this.focusDistanceOptimum: null; // unknown
-  this.focusMode: 'auto';
-  this.sceneMode: 'auto';
-  this.whiteBalanceMode: 'auto';
-  this.zoom: 1.0;
+  this.effect = 'none';
+  this.exposureCompensation = 0;
+  this.flashMode = 'off';
+  this.focalLength = 50;
+  this.focusAreas = [];
+  this.focusDistanceFar = null; // unknown
+  this.focusDistanceNear = null; // unknown
+  this.focusDistanceOptimum = null; // unknown
+  this.focusMode = 'auto';
+  this.sceneMode = 'auto';
+  this.whiteBalanceMode = 'auto';
+  this.zoom = 1.0;
   this.meteringAreas = [];
   
-  this.onShutter: evt => {};
-  this.onClosed: evt => {};
-  this.onRecorderStateChange: evt => {};
+  this.onShutter = evt => {};
+  this.onClosed = evt => {};
+  this.onRecorderStateChange = evt => {};
   
   this.canvas = null;
   this.camera = new Camera();
@@ -62,7 +84,7 @@ AlphaCameraControl.prototype.discover = function() {
   .then(res => this.setButtonPicAction());
 };
 
-AlphaCameraContol.prototype._initCanvas = function(onsuccess, onerror) {
+AlphaCameraControl.prototype._initCanvas = function(onsuccess, onerror) {
   if (this.canvas) {
     return onsuccess(this.canvas);
   }
@@ -71,15 +93,15 @@ AlphaCameraContol.prototype._initCanvas = function(onsuccess, onerror) {
   onsuccess(this.canvas);
 };
 
-AlphaCameraContol.prototype.autoFocus = function(onsuccess, onerror) {
-  onerror = onerror || () => {};
+AlphaCameraControl.prototype.autoFocus = function(onsuccess, onerror) {
+  onerror = onerror || (() => {});
   // Not true, just a test
   onerror("Autofocus not available");
 };
 
-AlphaCameraContol.prototype.getPreviewStream = function(options, onsuccess, onerror) {
-  onerror = onerror || () => {};
-  if (!options.width or !options.height) {
+AlphaCameraControl.prototype.getPreviewStream = function(options, onsuccess, onerror) {
+  onerror = onerror || (() => {});
+  if (!options.width || !options.height) {
     return onerror("options must contains a width and a height fields");
   }
   
@@ -87,9 +109,9 @@ AlphaCameraContol.prototype.getPreviewStream = function(options, onsuccess, oner
   this._initCanvas(() => onsuccess(this._canvas.captureStream()), onerror);
 };
 
-AlphaCameraContol.prototype.getPreviewStreamVideoMode = function() {
-  onerror = onerror || () => {};
-  if (!options.width or !options.height) {
+AlphaCameraControl.prototype.getPreviewStreamVideoMode = function() {
+  onerror = onerror || (() => {});
+  if (!options.width || !options.height) {
     return onerror("options must contains a width and a height fields");
   }
   
@@ -97,35 +119,35 @@ AlphaCameraContol.prototype.getPreviewStreamVideoMode = function() {
   this._initCanvas(() => onsuccess(this._canvas.captureStream()), onerror);
 };
 
-AlphaCameraContol.prototype.release = function(onsuccess, onerror) {
-  onsuccess = onsuccess || () => {};
-  onerror = onerror || () => {};
+AlphaCameraControl.prototype.release = function(onsuccess, onerror) {
+  onsuccess = onsuccess || (() => {});
+  onerror = onerror || (() => {});
   // nothing
   onsuccess();
 };
 
-AlphaCameraContol.prototype.resumePreview = function() {
+AlphaCameraControl.prototype.resumePreview = function() {
 };
 
-AlphaCameraContol.prototype.setExposureCompensation = function(compensation) {
+AlphaCameraControl.prototype.setExposureCompensation = function(compensation) {
 };
 
-AlphaCameraContol.prototype.startRecording = function(options, storage, filename, onsuccess, onerror) {
-  onerror = onerror || () => {};
+AlphaCameraControl.prototype.startRecording = function(options, storage, filename, onsuccess, onerror) {
+  onerror = onerror || (() => {});
   onerror("Video recording not available on this device");
 };
 
-AlphaCameraContol.prototype.stopRecording = function() {
+AlphaCameraControl.prototype.stopRecording = function() {
 };
 
-AlphaCameraContol.prototype.pauseRecording = function() {
+AlphaCameraControl.prototype.pauseRecording = function() {
 };
 
-AlphaCameraContol.prototype.resumeRecording = function() {
+AlphaCameraControl.prototype.resumeRecording = function() {
 };
 
-AlphaCameraContol.prototype.takePicture = function(options, onsuccess, onerror) {
-  onerror = onerror || () => {};
+AlphaCameraControl.prototype.takePicture = function(options, onsuccess, onerror) {
+  onerror = onerror || (() => {});
   // TODO: look at options
   
   var xhr = new XMLHttpRequest({ mozSystem: true });
@@ -150,7 +172,7 @@ AlphaCameraContol.prototype.takePicture = function(options, onsuccess, onerror) 
 };
 
 
-
+});
 
 
 

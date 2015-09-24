@@ -1,3 +1,8 @@
+define(function(require, exports, module) {
+'use strict';
+
+module.exports = $http;
+  
 function $http(url, opts){
   var core = {
     ajax : function (method, url, payload, args) {
@@ -57,3 +62,5 @@ function $http(url, opts){
     }
   };
 };
+
+});

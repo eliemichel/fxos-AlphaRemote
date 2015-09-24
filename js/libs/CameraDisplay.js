@@ -1,4 +1,10 @@
-"use strict";
+define(function(require, exports, module) {
+'use strict';
+
+var Stream = require('lib/alpha/Stream');
+
+module.exports = CameraDisplay;
+
 // This class bridges the Camera object to the application.
 // The Camera must not be aware of anything related to the display.
 
@@ -116,3 +122,6 @@ CameraDisplay.prototype.startLiveviewStreaming = function() {
     stream.read(8).then(handleCommonHeader);
   });
 };
+
+  
+});

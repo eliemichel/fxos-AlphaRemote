@@ -1,3 +1,9 @@
+define(function(require, exports, module) {
+'use strict';
+
+module.exports = Stream;
+
+
 function Stream(socket) {
   this._socket = undefined;
   this._fullBuffer = new ArrayBuffer(Stream.MAX_BUFFER_SIZE * 2);
@@ -112,3 +118,5 @@ Stream.prototype.extendBuffer = function(len) {
     console.log("Extending buffer to " + this._fullBuffer.byteLength);
   }
 };
+
+});

@@ -1,15 +1,27 @@
+define(function(require, exports, module) {
+'use strict';
+
+/**
+ * Module Dependencies
+ */
+
+var parseXml = require('lib/alpha/parseXml');
+var $http = require('lib/alpha/http');
+
+module.exports = Camera;
+  
 // This class handles the communication with a Sony Alpha series camera
 // Anything depending on the Sony API should be here.
 
 // These constants are here to avoid hardcoding anything within the class itself
 // (This is actually not very relevant since we then load all the methods without
 // any proxy, which breaks any protection to change in API)
-SONY_API_VERSION = "1.0";
-SONY_API_getMethodTypes = "getMethodTypes";
-SONY_API_XML_ScalarWebAPI_DeviceInfo = "av:X_ScalarWebAPI_DeviceInfo";
-SONY_API_XML_ScalarWebAPI_Service = "av:X_ScalarWebAPI_Service"
-SONY_API_XML_ScalarWebAPI_ServiceType = "av:X_ScalarWebAPI_ServiceType"
-SONY_API_XML_ScalarWebAPI_ActionList_URL = "av:X_ScalarWebAPI_ActionList_URL"
+var SONY_API_VERSION = "1.0";
+var SONY_API_getMethodTypes = "getMethodTypes";
+var SONY_API_XML_ScalarWebAPI_DeviceInfo = "av:X_ScalarWebAPI_DeviceInfo";
+var SONY_API_XML_ScalarWebAPI_Service = "av:X_ScalarWebAPI_Service"
+var SONY_API_XML_ScalarWebAPI_ServiceType = "av:X_ScalarWebAPI_ServiceType"
+var SONY_API_XML_ScalarWebAPI_ActionList_URL = "av:X_ScalarWebAPI_ActionList_URL"
 
 function Camera(endpoint) {
   // Counter of requests
@@ -108,4 +120,4 @@ Camera.prototype.setEndpointFromXML = function(xmlString) {
   return this.endpoint;
 };
 
-
+});
