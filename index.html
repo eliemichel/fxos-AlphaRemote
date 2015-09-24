@@ -7,8 +7,14 @@
         <meta name="viewport" content="width=device-width">
         <link rel="stylesheet" href="css/app.css">
         
-        <script data-main="js/app" src="js/require.min.js" defer></script>
-        <!-- <script type="text/javascript" src="js/app.js" defer></script> -->
+        <script type="text/javascript" src="js/libs/parseXml.js" defer></script>
+        <script type="text/javascript" src="js/libs/http.js" defer></script>
+        <script type="text/javascript" src="js/libs/ssdp.js" defer></script>
+        <script type="text/javascript" src="js/alpha/Stream.js" defer></script>
+        <script type="text/javascript" src="js/alpha/Camera.js" defer></script>
+        <script type="text/javascript" src="js/alpha/CameraDisplay.js" defer></script>
+        <script type="text/javascript" src="js/alpha/AlphaCameraControl.js" defer></script>
+        <script type="text/javascript" src="js/app.js" defer></script>
         
         <!--
         The following two lines are for loading the localisations library
@@ -23,7 +29,7 @@
             <p id="message"></p>
             <p>
                 <button id="button-pic">Take a pic!</button>
-                <canvas id="liveview" height="300" width="300"></canvas>
+                <video id="liveview" width="100%"></video>
                 <img id="img-last-pic" alt="last pic" />
             </p>
         </section>

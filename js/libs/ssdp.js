@@ -1,8 +1,7 @@
-define(function(require, exports, module) {
-'use strict';
-
+/*
 module.exports = $ssdp;
-  
+*/
+
 // This class handles the detection of devices using SSDP protocol.
 
 function SsdpDiscoverer(config) {
@@ -68,5 +67,3 @@ SsdpDiscoverer.prototype.discover = function(target) {
 function $ssdp(config) {
   return new SsdpDiscoverer(config);
 }
-
-});

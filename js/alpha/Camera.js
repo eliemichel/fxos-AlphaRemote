@@ -1,15 +1,10 @@
-define(function(require, exports, module) {
-'use strict';
-
-/**
- * Module Dependencies
- */
-
+/*
 var parseXml = require('alpha/parseXml');
 var $http = require('alpha/http');
 
 module.exports = Camera;
-  
+  */
+
 // This class handles the communication with a Sony Alpha series camera
 // Anything depending on the Sony API should be here.
 
@@ -120,4 +115,3 @@ Camera.prototype.setEndpointFromXML = function(xmlString) {
   return this.endpoint;
 };
 
-});

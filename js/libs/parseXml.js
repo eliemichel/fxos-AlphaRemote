@@ -1,7 +1,6 @@
-define(function(require, exports, module) {
-'use strict';
-  
+/*  
 module.exports = parseXml;
+*/
 
 function parseXml(xmlStr) {
 
@@ -18,5 +17,3 @@ function parseXml(xmlStr) {
   }
 
 }
-  
-});

@@ -1,9 +1,8 @@
-define(function(require, exports, module) {
-'use strict';
-
+/*
 var Stream = require('alpha/Stream');
 
 module.exports = CameraDisplay;
+*/
 
 // This class bridges the Camera object to the application.
 // The Camera must not be aware of anything related to the display.
@@ -13,10 +12,11 @@ function CameraDisplay(camera, canvas) {
   // |canvas| is the DOM canvas node to display it in.
   this.camera = camera;
   
+  // TODO: adapt to camera settings
   if (!canvas) {
     canvas = document.createElement('canvas');
-    canvas.width = 256;
-    canvas.height = 256;
+    canvas.width = 600;
+    canvas.height = 480;
   }
   
   this.canvas = canvas;
@@ -48,16 +48,13 @@ CameraDisplay.prototype.startLiveviewStreaming = function() {
   this.camera.startLiveview()
   .then(res => {
     this.liveviewEndpoint = res[0];
+    console.log(this.liveviewEndpoint);
 
-    //var socket = navigator.mozTCPSocket.open("192.168.122.1", 8080, {binaryType: 'string'});
-    //socket.onopen = () => socket.send("GET /liveview/liveviewstream HTTP/1.1\r\nHost: 192.168.122.1\r\n\r\n");
-    
-    //var httpStream = new StringStream(socket);
     var stream = new Stream();
     
     var xhr = new XMLHttpRequest({ mozSystem: true });
     xhr.responseType = "moz-chunked-arraybuffer";
-    xhr.open('GET', 'http://192.168.122.1:8080/liveview/liveviewstream');
+    xhr.open('GET', this.liveviewEndpoint);
     xhr.addEventListener('progress', event => {
       window.res = xhr.response;
       stream.feed(xhr.response);
@@ -123,5 +120,3 @@ CameraDisplay.prototype.startLiveviewStreaming = function() {
   });
 };
 
-  
-});

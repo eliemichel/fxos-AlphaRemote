@@ -1,25 +1,15 @@
-define(function(require, exports, module) {
-'use strict';
-
-/**
- * Module Dependencies
- */
-
+/*
 var $ssdp = require('alpha/ssdp');
 var $http = require('alpha/http');
 var Camera = require('alpha/Camera');
 var CameraDisplay = require('alpha/CameraDisplay');
 var Stream = require('alpha/Stream');
 
-var debug = require('debug')('AlphaCameraControl');
-
-/**
- * Exports
- */
-
 module.exports = AlphaCameraControl;
+*/
 
-  
+var SONY_API_URN = "urn:schemas-sony-com:service:ScalarWebAPI:1";
+
 // This class implements the CameraControl interface for Alpha device
 // See https://developer.mozilla.org/en-US/docs/Web/API/CameraControl
 
@@ -61,15 +51,14 @@ function AlphaCameraControl() {
   this.onClosed = evt => {};
   this.onRecorderStateChange = evt => {};
   
-  this.canvas = null;
   this.camera = new Camera();
   this.cameraDisplay = new CameraDisplay(this.camera);
-  
-  this.discover();
+  this.canvas = this.cameraDisplay.canvas;
 }
 
 AlphaCameraControl.prototype.discover = function() {
-  $ssdp().discover("urn:schemas-sony-com:service:ScalarWebAPI:1")
+  return (
+  $ssdp().discover(SONY_API_URN)
   .then(deviceInfo => {
     console.log(deviceInfo.location);
     return $http(deviceInfo.location, { mozSystem: true }).get();
@@ -81,7 +70,8 @@ AlphaCameraControl.prototype.discover = function() {
   })
   .then(res => this.camera.startRecMode())
   .then(res => this.cameraDisplay.startLiveviewStreaming())
-  .then(res => this.setButtonPicAction());
+  .then(res => true)
+  );
 };
 
 AlphaCameraControl.prototype._initCanvas = function(onsuccess, onerror) {
@@ -100,13 +90,17 @@ AlphaCameraControl.prototype.autoFocus = function(onsuccess, onerror) {
 };
 
 AlphaCameraControl.prototype.getPreviewStream = function(options, onsuccess, onerror) {
-  onerror = onerror || (() => {});
-  if (!options.width || !options.height) {
-    return onerror("options must contains a width and a height fields");
-  }
-  
-  // TODO: check options in this.capabilities.previewSizes
-  this._initCanvas(() => onsuccess(this._canvas.captureStream()), onerror);
+  return new Promise((resolve, reject) => {
+    onsuccess = onsuccess || resolve;
+    onerror = onerror || reject;
+    
+    if (!options.width || !options.height) {
+      return onerror("options must contains a width and a height fields");
+    }
+
+    // TODO: check options in this.capabilities.previewSizes
+    this._initCanvas(() => onsuccess(this.canvas.captureStream()));
+  });
 };
 
 AlphaCameraControl.prototype.getPreviewStreamVideoMode = function() {
@@ -147,32 +141,31 @@ AlphaCameraControl.prototype.resumeRecording = function() {
 };
 
 AlphaCameraControl.prototype.takePicture = function(options, onsuccess, onerror) {
-  onerror = onerror || (() => {});
-  // TODO: look at options
-  
-  var xhr = new XMLHttpRequest({ mozSystem: true });
-  xhr.responseType = "arraybuffer";
-  
-  xhr.onerror = function () {
-    onerror(this.statusText);
-  };
-  xhr.onload = function () {
-    if (this.status != 200) {
-      reject(this.statusText);
-    }
-    var blob = new Blob([this.response], {type: 'image/jpeg'});
-    onsuccess(blob);
-  };
+  return new Promise((resolve, reject) => {
+    onsuccess = onsuccess || resolve;
+    onerror = onerror || reject;
+    // TODO: look at options
+    
+    var xhr = new XMLHttpRequest({ mozSystem: true });
+    xhr.responseType = "arraybuffer";
+    
+    xhr.onerror = function () {
+      onerror(this.statusText);
+    };
+    xhr.onload = function () {
+      if (this.status != 200) {
+        onerror(this.statusText);
+      }
+      var blob = new Blob([this.response], {type: 'image/jpeg'});
+      onsuccess(blob);
+    };
 
-  this._camera.actTakePicture().then(res => {
-    var url = res[0][0];
-    xhr.open('GET', url);
-    xhr.send();
+    this.camera.actTakePicture().then(res => {
+      var url = res[0][0];
+      xhr.open('GET', url);
+      xhr.send();
+    });
   });
 };
-
-
-});
-
 
 
