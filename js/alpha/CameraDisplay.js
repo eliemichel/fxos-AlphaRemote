@@ -1,7 +1,7 @@
 define(function(require, exports, module) {
 'use strict';
 
-var Stream = require('lib/alpha/Stream');
+var Stream = require('alpha/Stream');
 
 module.exports = CameraDisplay;
 

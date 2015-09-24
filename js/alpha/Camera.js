@@ -5,8 +5,8 @@ define(function(require, exports, module) {
  * Module Dependencies
  */
 
-var parseXml = require('lib/alpha/parseXml');
-var $http = require('lib/alpha/http');
+var parseXml = require('alpha/parseXml');
+var $http = require('alpha/http');
 
 module.exports = Camera;
   

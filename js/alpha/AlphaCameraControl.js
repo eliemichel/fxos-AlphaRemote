@@ -5,11 +5,11 @@ define(function(require, exports, module) {
  * Module Dependencies
  */
 
-var $ssdp = require('lib/alpha/ssdp');
-var $http = require('lib/alpha/http');
-var Camera = require('lib/alpha/Camera');
-var CameraDisplay = require('lib/alpha/CameraDisplay');
-var Stream = require('lib/alpha/Stream');
+var $ssdp = require('alpha/ssdp');
+var $http = require('alpha/http');
+var Camera = require('alpha/Camera');
+var CameraDisplay = require('alpha/CameraDisplay');
+var Stream = require('alpha/Stream');
 
 var debug = require('debug')('AlphaCameraControl');
 
