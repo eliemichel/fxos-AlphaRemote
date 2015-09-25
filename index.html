@@ -1,37 +1,84 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>AlphaRemote</title>
-        <meta name="description" content="A remote controller for Sony Alpha series cameras">
-        <meta name="viewport" content="width=device-width">
-        <link rel="stylesheet" href="css/app.css">
-        
-        <script type="text/javascript" src="js/libs/parseXml.js" defer></script>
-        <script type="text/javascript" src="js/libs/http.js" defer></script>
-        <script type="text/javascript" src="js/libs/ssdp.js" defer></script>
-        <script type="text/javascript" src="js/alpha/Stream.js" defer></script>
-        <script type="text/javascript" src="js/alpha/Camera.js" defer></script>
-        <script type="text/javascript" src="js/alpha/CameraDisplay.js" defer></script>
-        <script type="text/javascript" src="js/alpha/AlphaCameraControl.js" defer></script>
-        <script type="text/javascript" src="js/app.js" defer></script>
-        
-        <!--
-        The following two lines are for loading the localisations library
-        -->
-        <link rel="prefetch" type="application/l10n" href="data/locales.ini" />
-        <script type="text/javascript" src="js/libs/l10n.js" defer></script>
-    </head>
-    <body>
+<head>
+    <meta charset="utf-8">
+    <title>AlphaRemote</title>
+    <meta name="description" content="A remote controller for Sony Alpha series cameras">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+
+    <!--
+    <link rel="stylesheet" type="text/css" href="/shared/style/confirm.css" />
+    <link rel="stylesheet" type="text/css" href="/shared/style/buttons.css" />
+    <link rel="stylesheet" type="text/css" href="/shared/style/action_menu.css" />
+    <link rel="stylesheet" type="text/css" href="/shared/style/progress_activity.css" />
+    -->
+
+    <link rel="stylesheet" type="text/css" href="shared/style/controls.css" />
+    <link rel="stylesheet" type="text/css" href="shared/gaia-icons/gaia-icons.css" />
+    <link rel="stylesheet" href="css/app.css">
+
+    <script type="text/javascript" src="js/libs/parseXml.js" defer></script>
+    <script type="text/javascript" src="js/libs/http.js" defer></script>
+    <script type="text/javascript" src="js/libs/ssdp.js" defer></script>
+    <script type="text/javascript" src="js/alpha/Stream.js" defer></script>
+    <script type="text/javascript" src="js/alpha/Camera.js" defer></script>
+    <script type="text/javascript" src="js/alpha/CameraDisplay.js" defer></script>
+    <script type="text/javascript" src="js/alpha/AlphaCameraControl.js" defer></script>
+    <script type="text/javascript" src="js/app.js" defer></script>
+
+    <script type="text/javascript" src="js/ui/Views.js" defer></script>
+    <script type="text/javascript" src="js/ui/Router.js" defer></script>
+    <script type="text/javascript" src="js/main.js" defer></script>
+
+    <link rel="prefetch" type="application/l10n" href="data/locales.ini" />
+    <script type="text/javascript" src="js/libs/l10n.js" defer></script>
+</head>
+<body>
+
+    <!-- Action takes place here -->
+    <main></main>
+
+    <template id="index">
+        <div class="liveview--padding">
+            <video class="liveview" id="liveview" src="http://www.w3schools.com/HTML/mov_bbb.mp4"></video>
+        </div>
+        <div class="controls">
+            <div class="controls-left">
+                <div class="controls-button controls-thumbnail-button test-thumbnail js-thumbnail rotates" name="thumbnail" role="button" data-l10n-id="preview-button"></div>
+                <div class="controls-button controls-cancel-pick-button test-cancel-pick rotates js-cancel" name="cancel" data-icon="close" role="button" data-l10n-id="controls-button-close"></div>
+            </div>
+            <div class="controls-middle">
+                <div class="capture-button test-capture rotates js-capture" name="capture" data-l10n-id="capture-button" role="button">
+                    <div class="circle outer-circle"></div>
+                    <div class="circle inner-circle"></div>
+                    <div class="center" data-icon="camera" aria-hidden="true"></div>
+                </div>
+            </div>
+            <div class="controls-right">
+                <div class="mode-switch test-switch" name="switch">
+                    <div class="inner js-switch" role="button">
+                        <div class="mode-switch_bg-icon rotates" data-icon="camera" aria-hidden="true"></div>
+                        <div class="mode-switch_bg-icon rotates" data-icon="video" aria-hidden="true"></div>
+                        <div class="mode-switch_handle js-switch-handle" aria-hidden="true">
+                            <div class="mode-switch_current-icon camera rotates js-icon-camera" data-icon="camera" aria-hidden="true"></div>
+                            <div class="mode-switch_current-icon video rotates js-icon-video" data-icon="video" aria-hidden="true"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="gallery">
+        <img id="img-last-pic" alt="last pic" />
+    </template>
+
+    <template id="credits">
         <section>
-            <h1 data-l10n-id="app_title">Privileged empty app</h1>
-            <p data-l10n-id="app_description">This app is empty. Fill it with your own stuff!</p>
+            <h1 data-l10n-id="app_title">AlphaControl</h1>
+            <p data-l10n-id="app_description">blabla</p>
             <p id="message"></p>
-            <p>
-                <button id="button-pic">Take a pic!</button>
-                <video id="liveview" width="100%"></video>
-                <img id="img-last-pic" alt="last pic" />
-            </p>
         </section>
-    </body>
+    </template>
+</body>
 </html>

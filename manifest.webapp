@@ -3,6 +3,7 @@
   "name": "AlphaRemote",
   "description": "A remote controller for Sony Alpha series cameras",
   "launch_path": "/index.html",
+  "fullscreen": true,
   "icons": {
     "16": "/img/icons/icon16x16.png",
     "48": "/img/icons/icon48x48.png",

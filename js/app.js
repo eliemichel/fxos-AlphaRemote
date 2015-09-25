@@ -1,7 +1,7 @@
 'use strict';
 
 function setButtonPicAction(camera) {
-  var buttonPic = document.getElementById('button-pic');
+  var buttonPic = document.querySelector('.js-capture');
   var lastPic = document.getElementById('img-last-pic');
   
   buttonPic.addEventListener("click", e => {
