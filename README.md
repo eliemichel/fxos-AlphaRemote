@@ -1,7 +1,7 @@
 AlphaRemote
 ===========
 
-![Application Icon](https://raw.githubusercontent.com/eliemichel/fxos-AlphaRemote/master/img/icons/icon128x128.png)
+![Application Icon](https://raw.githubusercontent.com/eliemichel/fxos-AlphaRemote/master/img/icons/icon256x256.png)
 
 This application is a remote controller for Sony Alpha series camera on Firefox OS.
 It is based on the camera application and offers a remote viewer and trigger.

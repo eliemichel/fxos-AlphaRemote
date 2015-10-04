@@ -9,6 +9,7 @@
     "48": "/img/icons/icon48x48.png",
     "60": "/img/icons/icon60x60.png",
     "128": "/img/icons/icon128x128.png"
+    "256": "/img/icons/icon256x256.png"
   },
   "developer": {
     "name": "Élie Michel",
@@ -18,9 +19,6 @@
   "permissions": {
     "udp-socket": {
       "description": "UDP is required to find the camera (SSDP protocol)"
-    },
-    "tcp-socket": {
-      "description": "TCP is required to stream camera liveview."
     },
     "systemXHR" : {
       "description": "External connection are needed to connect to the camera"
